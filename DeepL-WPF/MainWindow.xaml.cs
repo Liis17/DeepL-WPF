@@ -23,7 +23,6 @@ namespace DeepL_WPF
         {
             if (exit)
             {
-                GC.Collect();
                 Environment.Exit(0);
             }
             else

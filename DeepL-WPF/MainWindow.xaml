@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:wv="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-    Title="MainWindow"
+    Title="DeepL"
     Width="1280"
     Height="720"
     Background="White"
@@ -17,6 +17,7 @@
     StateChanged="WinStateChanged"
     WindowBackdropType="None"
     WindowCornerPreference="Round"
+    WindowStartupLocation="CenterScreen"
     WindowState="Normal"
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
@@ -34,7 +35,6 @@
             Foreground="Black"
             MinimizeClicked="maintitlebar_MinimizeClicked"
             Visibility="Visible" />
-
         <wv:WebView2
             Name="webView"
             Margin="0,35,0,0"

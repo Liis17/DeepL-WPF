@@ -2,6 +2,7 @@
 
   <PropertyGroup Label="Globals">
     <WebView2UseWinRT>False</WebView2UseWinRT>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,7 +14,21 @@
     <UseWPF>true</UseWPF>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <UseWindowsForms>True</UseWindowsForms>
+    <PackageIcon>DeepL-logo.png</PackageIcon>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>Resources\DeepL.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\DeepL.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\daske\Desktop\DeepL-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hardcodet.Wpf.TaskbarNotification" Version="1.0.5" />
