@@ -1,7 +1,11 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.Web.WebView2.Core;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+
 using Wpf.Ui.Controls;
 using MenuItem = Wpf.Ui.Controls.MenuItem;
 
@@ -14,11 +18,29 @@ namespace DeepL_WPF
         {
             InitializeComponent();
             InitializeTrayIcon();
+            InitializeWebView();
         }
+        private async void InitializeWebView()
+        {
+            webView = new Microsoft.Web.WebView2.Wpf.WebView2();
+            await webView.EnsureCoreWebView2Async(null);
+            webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+            webView.PreviewKeyDown += (sender, e) =>
+            {
+                if (e.Key == Key.F12)
+                {
+                    e.Handled = true;
+                }
+            };
+            webView.Source = new Uri("https://www.deepl.com/translator");
+            webView.CoreWebView2.ContextMenuRequested += CoreWebView2_ContextMenuRequested;
+        }
+
         private void UiWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             CloseWindow(e);
         }
+        
         private void CloseWindow(System.ComponentModel.CancelEventArgs? e = null, bool exit = false)
         {
             if (exit)
@@ -35,11 +57,24 @@ namespace DeepL_WPF
                 {
 
                 }
+                webView.Dispose();
                 Hide();
                 WindowState = WindowState.Minimized;
             }
         }
-
+        private void CoreWebView2_ContextMenuRequested(object sender, CoreWebView2ContextMenuRequestedEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            foreach (var item in e.MenuItems)
+            {
+                if (item.Name == "DevTools")
+                {
+                    e.MenuItems.Remove(item);
+                    break;
+                }
+            }
+            deferral.Complete();
+        }
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
         {
             try
@@ -57,15 +92,9 @@ namespace DeepL_WPF
         }
         private void WinStateChanged(object sender, EventArgs e)
         {
-            if (WindowState == WindowState.Minimized)
-            {
-                // тут отключить обновление интерфейса
-            }
-            else
-            {
 
-            }
         }
+
 
         private void InitializeTrayIcon()
         {
