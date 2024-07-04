@@ -1,19 +1,13 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
-using Microsoft.Web.WebView2.Core;
-
+﻿using Microsoft.Web.WebView2.Core;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-
 using Wpf.Ui.Controls;
-using MenuItem = Wpf.Ui.Controls.MenuItem;
 
 namespace DeepL_WPF
 {
     public partial class MainWindow : FluentWindow
     {
-        private TaskbarIcon trayIcon;
+        private NotifyIcon trayIcon;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,7 +34,7 @@ namespace DeepL_WPF
         {
             CloseWindow(e);
         }
-        
+
         private void CloseWindow(System.ComponentModel.CancelEventArgs? e = null, bool exit = false)
         {
             if (exit)
@@ -98,21 +92,26 @@ namespace DeepL_WPF
 
         private void InitializeTrayIcon()
         {
-            trayIcon = new TaskbarIcon();
+            trayIcon = new NotifyIcon();
             trayIcon.Icon = Properties.Resources.DeepL;
-            trayIcon.ToolTipText = "DeepL";
-            ContextMenu menu = new ContextMenu();
-            MenuItem showMenuItem = new MenuItem { Header = "Показать" };
-            MenuItem HiddenMenuItem = new MenuItem { Header = "Свернуть" };
-            MenuItem exitMenuItem = new MenuItem { Header = "Выход" };
+            trayIcon.Text = "DeepL";
+            trayIcon.Visible = true;
+
+            ContextMenuStrip menu = new ContextMenuStrip();
+            ToolStripMenuItem showMenuItem = new ToolStripMenuItem("Показать");
+            ToolStripMenuItem hiddenMenuItem = new ToolStripMenuItem("Свернуть");
+            ToolStripMenuItem exitMenuItem = new ToolStripMenuItem("Выход");
+
             showMenuItem.Click += ShowMenuItem_Click;
+            hiddenMenuItem.Click += HiddenMenuItem_Click;
             exitMenuItem.Click += ExitMenuItem_Click;
-            HiddenMenuItem.Click += HiddenMenuItem_Click;
+
             menu.Items.Add(showMenuItem);
-            menu.Items.Add(HiddenMenuItem);
+            menu.Items.Add(hiddenMenuItem);
             menu.Items.Add(exitMenuItem);
-            trayIcon.ContextMenu = menu;
-            trayIcon.TrayMouseDoubleClick += ShowMenuItem_Click;
+
+            trayIcon.ContextMenuStrip = menu;
+            trayIcon.DoubleClick += new EventHandler(ShowMenuItem_Click);
         }
 
         private void ShowMenuItem_Click(object sender, EventArgs e)
@@ -122,7 +121,7 @@ namespace DeepL_WPF
             Activate();
             Show();
         }
-        private void HiddenMenuItem_Click(object sender, RoutedEventArgs e)
+        private void HiddenMenuItem_Click(object sender, EventArgs e)
         {
             Hide();
             WindowState = WindowState.Minimized;
